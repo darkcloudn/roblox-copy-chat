@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: 100vh;
+  }
+  .container {
+    width: 400px;
+    margin-left: 0rem;
+    margin-top: 0rem;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  .input-field {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    width: 150%;
+  }
+  .input-field input {
+    flex: 1;
+    padding: 12px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+  }
+  .input-field .checkbox {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+  }
+  .input-field .checkbox input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  .input-field button.copy-button {
+    width: 130px;
+    background-color: #5995fd;
+    border: none;
+    outline: none;
+    height: 45px;
+    border-radius: 49px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: 0.5s;
+  }
+  .top-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+    margin-bottom: 10px;
+    margin-left: 5rem;
+    margin-top: 2rem;
+  }
+</style>
+<title>Simple Form</title>
+</head>
+<body>
+<div class="top-buttons">
+  <button type="button" class="btn solid" id="addRow">Thêm dòng</button>
+  <button type="button" class="btn solid" id="resetValues">Reset giá trị</button>
+</div>
+<div class="container" id="formContainer">
+  <div class="input-field">
+    <input type="text" id="input-0" placeholder="">
+    <div class="checkbox">
+      <input type="checkbox">
+    </div>
+    <button type="button" class="copy-button">Copy</button>
+  </div>
+</div>
+
+<script>
+  const addRowButton = document.getElementById('addRow');
+  const resetValuesButton = document.getElementById('resetValues');
+  const formContainer = document.getElementById('formContainer');
+  let inputCount = 1;
+
+  addRowButton.addEventListener('click', () => {
+    const newInputField = document.createElement('div');
+    newInputField.className = 'input-field';
+    newInputField.innerHTML = `
+      <input type="text" id="input-${inputCount}" placeholder="">
+      <div class="checkbox">
+        <input type="checkbox">
+      </div>
+      <button type="button" class="copy-button">Copy</button>
+    `;
+    formContainer.appendChild(newInputField);
+
+    const copyButtons = formContainer.querySelectorAll('.copy-button');
+    copyButtons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        const inputId = `input-${index}`;
+        const input = document.getElementById(inputId);
+        const checkbox = input.parentElement.querySelector('input[type="checkbox"]');
+        input.select();
+        document.execCommand('copy');
+        checkbox.checked = true;
+      });
+    });
+
+    inputCount++;
+  });
+
+  resetValuesButton.addEventListener('click', () => {
+    const inputFields = formContainer.querySelectorAll('.input-field input');
+    const checkboxes = formContainer.querySelectorAll('.input-field input[type="checkbox"]');
+    
+    inputFields.forEach(input => {
+      input.value = '';
+    });
+
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = false;
+    });
+  });
+</script>
+
+</body>
+</html>
